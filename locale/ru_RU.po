@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-20 17:53+0200\n"
+"POT-Creation-Date: 2013-03-20 18:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,9 +22,10 @@ msgstr ""
 msgid "just a test"
 msgstr "просто тест"
 
-#: test.js:4
-msgid "coin"
-msgid_plural "coins"
+#: test.js:6
+#, fuzzy
+msgid "that's 1 coin"
+msgid_plural "that's {n} coins"
 msgstr[0] "монета"
 msgstr[1] "монеты"
 msgstr[2] "монет"
