@@ -23,9 +23,8 @@ msgid "just a test"
 msgstr "просто тест"
 
 #: test.js:6
-#, fuzzy
 msgid "that's 1 coin"
 msgid_plural "that's {n} coins"
-msgstr[0] "монета"
-msgstr[1] "монеты"
-msgstr[2] "монет"
+msgstr[0] "це одна монета"
+msgstr[1] "це {n} монети"
+msgstr[2] "це {n} монет"
