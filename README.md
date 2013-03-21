@@ -38,6 +38,26 @@ String formatting rules: in a string like `"{something} to {replace}"` entities
 `{something}` and `{replace}` will be replaced with corresponding properties of
 an object.
 
+### Additional properties
+
+`__` has few additional properties which can be useful, namely:
+
+- `__.setMessages` - if you have to have `__` function before you've loaded
+  messages, you can set them later using that function. Or you can change
+  language in runtime (sounds crazy, you'll get interface in two languages
+  simultaneously).
+
+- `__.messages` - currently used messages. Please do not set this property
+  directly, use `setMessages` for that (it does more than setting a property).
+
+- `__.format` - formatting function, used by `__`. If you want, you can use it
+  yourself, accepts two arguments: a string and an object,
+  i.e. `__.format("stuff: {stuff}", {stuff: 5})`.
+
+- `__.plural` - function to check which variant of translation a number will
+  use.
+
+- `__.pluralNum` - total number of variants for plural forms.
 
 ## Examples
 

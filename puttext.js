@@ -9,22 +9,29 @@
     var format, parsePlural, pluralRe;
     pluralRe = /^Plural-Forms:\s*nplurals\s*=\s*(\d+);\s*plural\s*=\s*([^a-zA-Z0-9\$]*([a-zA-Z0-9\$]+).+)$/m;
     parsePlural = function(header) {
-      var expr, fn, match, num, varName;
-      match = header.match(pluralRe);
-      num = parseInt(pl[1]);
-      expr = pl[2];
-      varName = pl[3];
-      try {
-        fn = eval("function(" + varName + ") { return " + expr + " }");
-      } catch (e) {
-        fn = function(n) {
+      var expr, match, rv, varName;
+      rv = {
+        pluralNum: 2,
+        isPlural: function(n) {
           return n !== 1;
-        };
-      }
-      return {
-        pluralNum: num,
-        isPlural: fn
+        }
       };
+      if (!header) {
+        return rv;
+      }
+      match = header.match(pluralRe);
+      if (!match) {
+        return rv;
+      }
+      rv.pluralNum = parseInt(match[1]);
+      expr = match[2];
+      varName = match[3];
+      try {
+        rv.isPlural = eval("function(" + varName + ") { return " + expr + " }");
+      } catch (e) {
+        true;
+      }
+      return rv;
     };
     format = function(s, ctx) {
       return s.replace(/(^|.)\{([^\}]+)\}/g, function(match, prev, k) {
@@ -35,19 +42,21 @@
       });
     };
     return function(messages) {
-      var isPlural, pluralNum, _ref;
-      if (!messages) {
-        return function(msg1, msg2, num) {
-          if (num !== void 0 && num !== 1) {
-            return msg2;
-          }
-          return msg1;
-        };
-      }
-      _ref = parsePlural(messages[""]), pluralNum = _ref.pluralNum, isPlural = _ref.isPlural;
-      return function(msg1, msg2, num, ctx) {
+      var __;
+      __ = function(msg1, msg2, num, ctx) {
         var text, trans;
-        trans = messages[msg1];
+        if (!__.messages) {
+          if (__.plural(num)) {
+            return msg2;
+          } else {
+            return msg1;
+          }
+        }
+        if (typeof msg2 === 'object' && num === void 0 && ctx === void 0) {
+          ctx = msg2;
+          msg2 = void 0;
+        }
+        trans = __.messages[msg1];
         if (msg2 === void 0 && num === void 0) {
           if (typeof trans === 'string') {
             return trans;
@@ -58,12 +67,22 @@
         if (num !== void 0 && typeof trans === 'string') {
           throw ("Plural number (" + num + ") provided for '" + msg1 + "', but ") + ("only singular translation exists: " + trans);
         }
-        text = trans[plural(num)];
+        text = trans[__.plural(num)];
         if (ctx) {
           return format(text, ctx);
         }
         return text;
       };
+      __.format = format;
+      __.setMessages = function(messages) {
+        var isPlural, pluralNum, _ref;
+        __.messages = messages;
+        _ref = parsePlural(messages != null ? messages[""] : void 0), pluralNum = _ref.pluralNum, isPlural = _ref.isPlural;
+        __.pluralNum = pluralNum;
+        return __.plural = isPlural;
+      };
+      __.setMessages(messages);
+      return __;
     };
   });
 })(typeof define !== 'undefined' ? define : function(factory) {
