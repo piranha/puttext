@@ -1,5 +1,7 @@
+###
 # (c) 2013 Instant Communication Ltd.
 # under terms of ISC License
+###
 
 ((define) ->
   define ->
