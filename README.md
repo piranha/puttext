@@ -42,20 +42,19 @@ an object.
 
 `__` has few additional properties which can be useful, namely:
 
-- `__.setMessages` - if you have to have `__` function before you've loaded
-  messages, you can set them later using that function. Or you can change
+- `__.setMessages(messages)` - if you have to have `__` function before you've
+  loaded messages, you can set them later using that function. Or you can change
   language in runtime (sounds crazy, you'll get interface in two languages
   simultaneously).
 
 - `__.messages` - currently used messages. Please do not set this property
   directly, use `setMessages` for that (it does more than setting a property).
 
-- `__.format` - formatting function, used by `__`. If you want, you can use it
-  yourself, accepts two arguments: a string and an object,
-  i.e. `__.format("stuff: {stuff}", {stuff: 5})`.
+- `__.format(string, context)` - formatting function, used by `__`, so you can
+  use it yourself. Example: `__.format("stuff: {stuff}", {stuff: 5})`.
 
-- `__.plural` - function to check which variant of translation a number will
-  use.
+- `__.plural(number)` - function to check which variant of translation a number
+  will use.
 
 - `__.pluralNum` - total number of variants for plural forms.
 
@@ -63,22 +62,21 @@ an object.
 
 Initialization:
 
-```
+```javascript
 $.get('/locale/uk_UA.json', function(messages) {
     window.__ = puttext(messages);
 });
-
 ```
 
 Translate a single string:
 
-```
+```javascript
 console.log(__('this is a sample text'));
 ```
 
 Translate a plural string:
 
-```
+```javascript
 function (bottles) {
     console.log(__('1 bottle', 'many bottles', bottles.length));
 }
@@ -86,7 +84,7 @@ function (bottles) {
 
 Translate a plural string with formatting:
 
-```
+```javascript
 function (bottles) {
     console.log(__('1 bottle', '{n} bottles',
                    bottles.length, {n: bottles.length}));
