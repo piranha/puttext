@@ -30,7 +30,7 @@ def main():
     except IOError:
         print 'Cannot find file: %s' % sys.argv[1]
         sys.exit(1)
-    print gettext_json(f)
+    print gettext_json(f).encode('utf-8')
 
 
 if __name__ == "__main__":
