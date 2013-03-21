@@ -67,7 +67,7 @@ $.get('/locale/uk_UA.json', function(messages) {
     window.__ = puttext(messages);
 });
 
-# or
+// or
 
 window.__ = puttext();
 $.get('/locale/uk_UA.json', __.setMessages);
