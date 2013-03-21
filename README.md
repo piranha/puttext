@@ -86,9 +86,9 @@ Just search there by your language name.
 Example of a translation for Ukrainian (3 plural forms):
 
 ```
-msgid "that's 1 coin"
-msgid_plural "that's {n} coins"
-msgstr[0] "це одна монета"
-msgstr[1] "це {n} монети"
-msgstr[2] "це {n} монет"
+msgid "1 bottle"
+msgid_plural "{n} bottles"
+msgstr[0] "одна пляшка"
+msgstr[1] "{n} пляшки"
+msgstr[2] "{n} пляшок"
 ```
