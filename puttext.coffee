@@ -44,16 +44,17 @@
                 msg2 = undefined
 
             trans = __.messages[msg1]
+
             if msg2 == undefined and num == undefined
                 # check in case if some string with plural form was used in
                 # non-plural context
-                return if typeof trans == 'string' then trans else trans[0]
+                text = if typeof trans == 'string' then trans else trans[0]
+            else
+                if num != undefined and typeof trans == 'string'
+                    throw "Plural number (#{num}) provided for '#{msg1}', " +
+                        "but only singular translation exists: #{trans}"
+                text = trans[__.plural(num)]
 
-            if num != undefined and typeof trans == 'string'
-                throw "Plural number (#{num}) provided for '#{msg1}', but " +
-                    "only singular translation exists: #{trans}"
-
-            text = trans[__.plural(num)]
             if ctx
                 return format(text, ctx)
             return text

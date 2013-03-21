@@ -58,16 +58,13 @@
         }
         trans = __.messages[msg1];
         if (msg2 === void 0 && num === void 0) {
-          if (typeof trans === 'string') {
-            return trans;
-          } else {
-            return trans[0];
+          text = typeof trans === 'string' ? trans : trans[0];
+        } else {
+          if (num !== void 0 && typeof trans === 'string') {
+            throw ("Plural number (" + num + ") provided for '" + msg1 + "', ") + ("but only singular translation exists: " + trans);
           }
+          text = trans[__.plural(num)];
         }
-        if (num !== void 0 && typeof trans === 'string') {
-          throw ("Plural number (" + num + ") provided for '" + msg1 + "', but ") + ("only singular translation exists: " + trans);
-        }
-        text = trans[__.plural(num)];
         if (ctx) {
           return format(text, ctx);
         }
