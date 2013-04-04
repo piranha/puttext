@@ -46,11 +46,10 @@
       __ = function(msg1, msg2, num, ctx) {
         var text, trans;
         if (!__.messages) {
-          if (__.plural(num)) {
+          if (num !== void 0 && __.plural(num)) {
             return msg2;
-          } else {
-            return msg1;
           }
+          return msg1;
         }
         if (typeof msg2 === 'object' && num === void 0 && ctx === void 0) {
           ctx = msg2;

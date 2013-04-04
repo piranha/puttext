@@ -36,7 +36,9 @@
         __ = (msg1, msg2, num, ctx) ->
             # no translations, use default settings
             if not __.messages
-                return if __.plural(num) then msg2 else msg1
+                if num != undefined and __.plural(num)
+                    return msg2
+                return msg1
 
             # single message with formatting context
             if typeof msg2 == 'object' and num == undefined and ctx == undefined
