@@ -24,15 +24,17 @@ taken by Underscore.js in JavaScript.
 If you have no messages, you can call puttext without arguments and you'll
 receive pass-through for English words.
 
-`__` receives one, three or four arguments. When you pass a single argument, it
-will return single translated string. In case of three or four arguments, you
-enable plural mode and then:
+`__` receives from one to four arguments:
 
-- first two arguments should be strings - one for singular and one for plural
-  form;
-- third argument should be an integer by which puttext decides which form to
-  use;
-- (optional) fourths argument is an object used for string formatting.
+- with a single argument, it will return a single translated string;
+- with two arguments, first is considered a string to translate and second is
+  context for it (if you have variable parts in your message);
+- with three or four arguments, you enable plural mode and then:
+  - first two arguments should be strings - one for singular and one for plural
+    form;
+  - third argument should be an integer by which puttext decides which form to
+    use;
+  - (optional) fourths argument is an object used for string formatting.
 
 String formatting rules: in a string like `"{something} to {replace}"` entities
 `{something}` and `{replace}` will be replaced with corresponding properties of
@@ -77,6 +79,12 @@ Translate a single string:
 
 ```javascript
 console.log(__('this is a sample text'));
+```
+
+Translate a single string with formatting:
+
+```javascript
+console.log(__('this happened on {date}', {date: '2010-10-20'}));
 ```
 
 Translate a plural string:
