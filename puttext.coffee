@@ -34,28 +34,25 @@
 
     return (messages) ->
         __ = (msg1, msg2, num, ctx) ->
-            # no translations, use default settings
-            if not __.messages
-                if num != undefined and __.plural(num)
-                    return msg2
-                return msg1
-
             # single message with formatting context
             if typeof msg2 == 'object' and num == undefined and ctx == undefined
                 ctx = msg2
                 msg2 = undefined
 
-            trans = __.messages[msg1]
-
-            if msg2 == undefined and num == undefined
-                # check in case if some string with plural form was used in
-                # non-plural context
-                text = if typeof trans == 'string' then trans else trans[0]
+            if not __.messages or not __.messages[msg1]
+                if num != undefined and __.plural(num)
+                    text = msg2
+                else
+                    text = msg1
             else
-                if num != undefined and typeof trans == 'string'
-                    throw "Plural number (#{num}) provided for '#{msg1}', " +
-                        "but only singular translation exists: #{trans}"
-                text = trans[__.plural(num)]
+                trans = __.messages[msg1]
+                if msg2 == undefined and num == undefined
+                    text = if typeof trans == 'string' then trans else trans[0]
+                else
+                    if num != undefined and typeof trans == 'string'
+                        throw "Plural number (#{num}) provided for '#{msg1}', " +
+                            "but only singular translation exists: #{trans}"
+                    text = trans[__.plural(num)]
 
             if ctx
                 return format(text, ctx)

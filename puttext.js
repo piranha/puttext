@@ -45,24 +45,26 @@
       var __;
       __ = function(msg1, msg2, num, ctx) {
         var text, trans;
-        if (!__.messages) {
-          if (num !== void 0 && __.plural(num)) {
-            return msg2;
-          }
-          return msg1;
-        }
         if (typeof msg2 === 'object' && num === void 0 && ctx === void 0) {
           ctx = msg2;
           msg2 = void 0;
         }
-        trans = __.messages[msg1];
-        if (msg2 === void 0 && num === void 0) {
-          text = typeof trans === 'string' ? trans : trans[0];
-        } else {
-          if (num !== void 0 && typeof trans === 'string') {
-            throw ("Plural number (" + num + ") provided for '" + msg1 + "', ") + ("but only singular translation exists: " + trans);
+        if (!__.messages || !__.messages[msg1]) {
+          if (num !== void 0 && __.plural(num)) {
+            text = msg2;
+          } else {
+            text = msg1;
           }
-          text = trans[__.plural(num)];
+        } else {
+          trans = __.messages[msg1];
+          if (msg2 === void 0 && num === void 0) {
+            text = typeof trans === 'string' ? trans : trans[0];
+          } else {
+            if (num !== void 0 && typeof trans === 'string') {
+              throw ("Plural number (" + num + ") provided for '" + msg1 + "', ") + ("but only singular translation exists: " + trans);
+            }
+            text = trans[__.plural(num)];
+          }
         }
         if (ctx) {
           return format(text, ctx);
