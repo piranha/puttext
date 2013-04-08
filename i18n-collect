@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ -z $1 ]; then
+   echo "Usage: $0 <path-to.po> <dir-with-sources>"
+   exit
+fi
+
+$(dirname $0)/xgettext.js $2 | msguniq > out.po
+
+if [ -f $1 ]; then
+    VERSION_CONTROL=none msgmerge -U $1 out.po
+else
+    mv out.po $1
+fi
+
+rm out.po
