@@ -83,6 +83,10 @@ function format(s, ctx) {
     });
 }
 
+function e(s) {
+    return JSON.stringify(s);
+}
+
 function process(fn, markers) {
     if (!markers || !markers.length) {
         markers = ['__'];
@@ -109,11 +113,12 @@ function process(fn, markers) {
             // output message string
             console.log(comment);
             if (typeof msg === 'string') {
-                console.log(format('msgid "{msg}"\nmsgstr ""\n', {msg: msg}));
+                console.log(format('msgid {msg}\nmsgstr ""\n',
+                                   {msg: e(msg)}));
             } else {
-                console.log(format('msgid "{one}"\nmsgid_plural "{two}"\n' +
+                console.log(format('msgid {one}\nmsgid_plural {two}\n' +
                                    'msgstr[0] ""\nmsgstr[1] ""\n',
-                                   {one: msg[0], two: msg[1]}));
+                                   {one: e(msg[0]), two: e(msg[1])}));
             }
         }
     });

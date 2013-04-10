@@ -2,7 +2,7 @@
     "name": "puttext",
     "description": "gettext-enabled i18n library",
     "author": "Instant Communication Ltd",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "licenses": {
         "type": "ISC",
         "url": "http://github.com/piranha/puttext/raw/master/LICENSE"
