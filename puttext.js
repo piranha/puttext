@@ -18,8 +18,7 @@
 
 
         function parsePlural(header) {
-            var expr, match, rv, varName;
-            rv = {
+            var rv = {
                 pluralNum: 2,
                 isPlural: function(n) {
                     return n !== 1;
@@ -28,13 +27,15 @@
             if (!header) {
                 return rv;
             }
-            match = header.match(pluralRe);
+
+            var match = header.match(pluralRe);
             if (!match) {
                 return rv;
             }
+
             rv.pluralNum = parseInt(match[1], 10);
-            expr = match[2];
-            varName = match[3];
+            var expr = match[2];
+            var varName = match[3];
 
             var code = "(function (" + varName + ") { return " + expr + " })";
             try {
