@@ -67,31 +67,31 @@
         }
 
         return function(messages) {
-            function __(msg1, msg2, num, ctx) {
-                // in case of `__(msg, ctx);`
+            function puttext(msg1, msg2, num, ctx) {
+                // in case of `puttext(msg, ctx);`
                 if (typeof msg2 === 'object' && num === undefined &&
                     ctx === undefined) {
                     ctx = msg2;
                     msg2 = undefined;
                 }
 
-                var text = gettrans(__.messages, __.plural, msg1, msg2, num);
+                var text = gettrans(puttext.messages, puttext.plural, msg1, msg2, num);
                 if (ctx) {
                     return format(text, ctx);
                 }
                 return text;
             }
 
-            __.format = format;
-            __.setMessages = function(messages) {
-                __.messages = messages;
+            puttext.format = format;
+            puttext.setMessages = function(messages) {
+                puttext.messages = messages;
                 var parsed = parsePlural(messages && messages[""]);
-                __.pluralNum = parsed.pluralNum;
-                __.plural = parsed.isPlural;
+                puttext.pluralNum = parsed.pluralNum;
+                puttext.plural = parsed.isPlural;
             };
-            __.setMessages(messages);
+            puttext.setMessages(messages);
 
-            return __;
+            return puttext;
         };
     });
 })(typeof define !== 'undefined' ? define : function(factory) {
