@@ -75,7 +75,8 @@
                     msg2 = undefined;
                 }
 
-                var text = gettrans(puttext.messages, puttext.plural, msg1, msg2, num);
+                var text = gettrans(puttext.messages, puttext.plural,
+                                    msg1, msg2, num);
                 if (ctx) {
                     return format(text, ctx);
                 }
