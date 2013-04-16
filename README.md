@@ -9,6 +9,11 @@ It consists of two parts: Python script to convert compiled translation file
 (something.mo) into a JSON for JavaScript to use, and JavaScript library, which
 takes JS object and gives you a function to translate your messages.
 
+Dependencies:
+
+- client-side: **none**.
+- server-side: Node.js, Python, Shell, GNU gettext (for merging and compiling
+  messages).
 
 ## API
 
