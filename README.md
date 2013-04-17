@@ -41,9 +41,11 @@ receive pass-through for English words.
     use;
   - (optional) fourths argument is an object used for string formatting.
 
-String formatting rules: in a string like `"{something} to {replace}"` entities
-`{something}` and `{replace}` will be replaced with corresponding properties of
-an object.
+String formatting rules: in a string like `"{something} to {replace # name of
+person}"` entities `{something}` and `{replace # name of person}` will be
+replaced with corresponding properties of an object, and `# name of person` is
+considered to be a commentary for someone who does translation, so only
+`replace` is used as a key.
 
 ### Additional properties
 
