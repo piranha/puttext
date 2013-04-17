@@ -12,7 +12,7 @@
                 if (prev === '\\') {
                     return '{' + k + '}';
                 }
-                return prev + ctx[k];
+                return prev + ctx[k.split('#')[0].trim()];
             });
         }
 
