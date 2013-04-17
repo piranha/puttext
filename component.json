@@ -1,0 +1,11 @@
+{
+  "name": "puttext",
+  "repo": "socialabs/puttext",
+  "description": "Gettext-like i18n library for javascript",
+  "version": "0.1.0",
+  "keywords": ["i10n", "l18n", "gettext", "translation"],
+  "main": "xgettext.js",
+  "scripts": ["xgettext.js"],
+  "dependencies": {},
+  "development": {}
+}
