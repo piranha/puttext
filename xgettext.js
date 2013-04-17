@@ -5,7 +5,6 @@ var path = require('path'),
     Getopt = require('node-getopt'),
     U = require('uglify-js');
 
-
 function check(node, markers) {
     if (!(node instanceof U.AST_Call)) {
         return false;
@@ -87,12 +86,22 @@ function e(s) {
     return JSON.stringify(s);
 }
 
+function format_msgid(msg) {
+    if (typeof msg === 'string') {
+        return format('msgid {msg}\nmsgstr ""\n',
+                           {msg: e(msg)});
+    }
+    return format('msgid {one}\nmsgid_plural {two}\n' +
+                  'msgstr[0] ""\nmsgstr[1] ""\n',
+                  {one: e(msg[0]), two: e(msg[1])});
+}
+
 function process(fn, markers) {
     if (!markers || !markers.length) {
         markers = ['__'];
     }
 
-    // print header
+    // print minimal sufficient header
     console.log(
         'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n');
 
@@ -112,14 +121,7 @@ function process(fn, markers) {
 
             // output message string
             console.log(comment);
-            if (typeof msg === 'string') {
-                console.log(format('msgid {msg}\nmsgstr ""\n',
-                                   {msg: e(msg)}));
-            } else {
-                console.log(format('msgid {one}\nmsgid_plural {two}\n' +
-                                   'msgstr[0] ""\nmsgstr[1] ""\n',
-                                   {one: e(msg[0]), two: e(msg[1])}));
-            }
+            console.log(format_msgid(msg));
         }
     });
 }
