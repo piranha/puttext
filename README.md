@@ -15,6 +15,10 @@ Dependencies:
 - server-side: Node.js, Python, Shell, GNU gettext (for merging and compiling
   messages).
 
+There is a short rant about it, both
+[in Russian](http://solovyov.net/blog/2013/i18n/) and
+[in English](http://solovyov.net/en/2013/i18n/).
+
 ## API
 
 If you use AMD modules, then puttext should behave as a good AMD module. If you
