@@ -86,14 +86,34 @@ function e(s) {
     return JSON.stringify(s);
 }
 
-function format_msgid(msg) {
-    if (typeof msg === 'string') {
-        return format('msgid {msg}\nmsgstr ""\n',
-                           {msg: e(msg)});
+function format_msgid(data) {
+    data = extract_comments(data)
+    if (typeof data.m === 'string') {
+        return format(data.c + 'msgid {msg}\nmsgstr ""\n',
+                           {msg: e(data.m)});
     }
-    return format('msgid {one}\nmsgid_plural {two}\n' +
+    return format(data.c + 'msgid {one}\nmsgid_plural {two}\n' +
                   'msgstr[0] ""\nmsgstr[1] ""\n',
-                  {one: e(msg[0]), two: e(msg[1])});
+                  {one: e(data.m[0]), two: e(data.m[1])});
+}
+
+function extract_comments(msg) {
+    var comments = []
+
+    msg = [].concat(msg).map(function(m) {
+        return m.replace(/\{([^\}]+)\}/g, function(_, k) {
+            k = k.split('#').map(eval.call, ''.trim)
+            if (k[1]) {
+                comments.push('#. ' + k[0] + ' - ' + k[1] + '\n')
+            }
+            return '{' + k[0] + '}'
+        })
+    })
+
+    return {
+        c: comments.join(''), 
+        m: msg[1] ? msg : msg[0]
+    }
 }
 
 function process(fn, markers) {
