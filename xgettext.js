@@ -116,6 +116,8 @@ function extract_comments(msg) {
     }
 }
 
+var uniq = []
+
 function process(fn, markers) {
     if (!markers || !markers.length) {
         markers = ['__'];
@@ -128,6 +130,7 @@ function process(fn, markers) {
     return walk(fn, function(err, fn) {
         var messages = extract(fn, markers);
         var msg, comment;
+        
 
         for (var i = 0; i < messages.length; i++) {
             comment = messages[i][0];
@@ -140,8 +143,11 @@ function process(fn, markers) {
             }
 
             // output message string
-            console.log(comment);
-            console.log(format_msgid(msg));
+            if (!~uniq.indexOf(msg)) {
+                uniq.push(msg);
+                console.log(comment);
+                console.log(format_msgid(msg));
+            }
         }
     });
 }
