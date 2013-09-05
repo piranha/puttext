@@ -1,8 +1,10 @@
 {
     "name": "puttext",
     "description": "gettext-enabled i18n library",
-    "author": "Instant Communication Ltd",
-    "version": "1.1.0",
+    "author": {
+        "name": "Instant Communication Ltd"
+    },
+    "version": "1.1.1",
     "licenses": {
         "type": "ISC",
         "url": "http://github.com/piranha/puttext/raw/master/LICENSE"
@@ -12,5 +14,16 @@
         "node-getopt": "0.2.x",
         "po2json": "0.0.x"
     },
-    "bin": "xgettext.js"
+    "main": "puttext.js",
+    "bin": {
+        "puttext": "xgettext.js"
+    },
+    "readme": "# puttext\n\nTags: i18n, internationalization, javascript, gettext\n\nputtext is a small internationalization library for JavaScript, modelled after\ngettext.\n\nIt consists of two parts: Python script to convert compiled translation file\n(something.mo) into a JSON for JavaScript to use, and JavaScript library, which\ntakes JS object and gives you a function to translate your messages.\n\nDependencies:\n\n- client-side: **none**.\n- server-side: Node.js, Python, Shell, GNU gettext (for merging and compiling\n  messages).\n\nThere is a short rant about it, both\n[in Russian](http://solovyov.net/blog/2013/i18n/) and\n[in English](http://solovyov.net/en/2013/i18n/).\n\n## API\n\nIf you use AMD modules, then puttext should behave as a good AMD module. If you\ndon't, it assigns itself to a `window.puttext`.\n\nMain function has one argument - object with messages. That's the one you got\nafter converting your `.mo` file to JSON. And returns a function, which performs\ntranslations. I prefer to call this function `__` (two underscores) in my\ncode. This is because gettext is usually called `_` in other languages, which is\ntaken by Underscore.js in JavaScript.\n\nIf you have no messages, you can call puttext without arguments and you'll\nreceive pass-through for English words.\n\n`__` receives from one to four arguments:\n\n- with a single argument, it will return a single translated string;\n- with two arguments, first is considered a string to translate and second is\n  context for it (if you have variable parts in your message);\n- with three or four arguments, you enable plural mode and then:\n  - first two arguments should be strings - one for singular and one for plural\n    form;\n  - third argument should be an integer by which puttext decides which form to\n    use;\n  - (optional) fourths argument is an object used for string formatting.\n\nString formatting rules: in a string like `\"{something} to {replace # name of\nperson}\"` entities `{something}` and `{replace # name of person}` will be\nreplaced with corresponding properties of an object, and `# name of person` is\nconsidered to be a commentary for someone who does translation, so only\n`replace` is used as a key.\n\n### Additional properties\n\n`__` has few additional properties which can be useful, namely:\n\n- `__.setMessages(messages)` - if you have to have `__` function before you've\n  loaded messages, you can set them later using that function. Or you can change\n  language in runtime (sounds crazy, you'll get interface in two languages\n  simultaneously).\n\n- `__.messages` - currently used messages. Please do not set this property\n  directly, use `setMessages` for that (it does more than setting a property).\n\n- `__.format(string, context)` - formatting function, used by `__`, so you can\n  use it yourself. Example: `__.format(\"stuff: {stuff}\", {stuff: 5})`.\n\n- `__.plural(number)` - function to check which variant of translation a number\n  will use.\n\n- `__.pluralNum` - total number of variants for plural forms.\n\n## Examples\n\nInitialization:\n\n```javascript\n$.get('/locale/uk_UA.json', function(messages) {\n    window.__ = puttext(messages);\n});\n\n// or\n\nwindow.__ = puttext();\n$.get('/locale/uk_UA.json', __.setMessages);\n```\n\nTranslate a single string:\n\n```javascript\nconsole.log(__('this is a sample text'));\n```\n\nTranslate a single string with formatting:\n\n```javascript\nconsole.log(__('this happened on {date}', {date: '2010-10-20'}));\n```\n\nTranslate a plural string:\n\n```javascript\nfunction (bottles) {\n    console.log(__('1 bottle', 'many bottles', bottles.length));\n}\n```\n\nTranslate a plural string with formatting:\n\n```javascript\nfunction (bottles) {\n    console.log(__('1 bottle', '{n} bottles',\n                   bottles.length, {n: bottles.length}));\n}\n```\n\n### Plural forms\n\nBiggest complexity of translation comes from plural forms, and gettext (and\nputtext along with it) handles that with a special header named\n`Plural-Forms`. This header contains information about amount of plural forms\nand a formula to calculate which form should be used for given number. You can\nfind examples of formulas in\n[gettext documentation](http://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html).\nJust search there by your language name.\n\nExample of a translation for Ukrainian (3 plural forms):\n\n```\nmsgid \"1 bottle\"\nmsgid_plural \"{n} bottles\"\nmsgstr[0] \"одна пляшка\"\nmsgstr[1] \"{n} пляшки\"\nmsgstr[2] \"{n} пляшок\"\n```\n",
+    "readmeFilename": "README.md",
+    "_id": "puttext@1.1.1",
+    "dist": {
+        "shasum": "edf94c31b3a323a573df347633788595524f294c"
+    },
+    "_from": "puttext@",
+    "_resolved": "https://registry.npmjs.org/puttext/-/puttext-1.1.1.tgz"
 }
