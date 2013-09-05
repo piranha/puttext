@@ -1,16 +1,21 @@
 {
     "name": "puttext",
     "description": "gettext-enabled i18n library",
-    "author": "Instant Communication Ltd",
+    "author": {
+        "name": "Instant Communication Ltd"
+    },
     "version": "1.1.1",
     "licenses": {
         "type": "ISC",
         "url": "http://github.com/piranha/puttext/raw/master/LICENSE"
     },
     "dependencies": {
-        "uglify-js": "2.2.x",
+        "uglify-js": "2.4.x",
         "node-getopt": "0.2.x",
         "po2json": "0.0.x"
     },
-    "bin": "xgettext.js"
+    "main": "puttext.js",
+    "bin": {
+        "puttext": "xgettext.js"
+    }
 }

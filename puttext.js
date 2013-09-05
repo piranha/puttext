@@ -96,5 +96,9 @@
         };
     });
 })(typeof define !== 'undefined' ? define : function(factory) {
-    return window.puttext = factory();
+    if (typeof module !== 'undefined' && typeof exports !== 'undefined') {
+        return module.exports = factory();
+    } else {
+        return window.puttext = factory();
+    }
 });
