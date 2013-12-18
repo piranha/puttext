@@ -116,7 +116,8 @@ function extract_comments(msg) {
     }
 }
 
-var uniq = []
+var uniq = [],
+    toString$ = ({}).toString;
 
 function process(fn, markers) {
     if (!markers || !markers.length) {
@@ -128,8 +129,7 @@ function process(fn, markers) {
         'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n');
 
     return walk(fn, function(err, fn) {
-        var messages = extract(fn, markers);
-        var msg, comment;
+        var messages = extract(fn, markers), msg, comment, _key;
         
 
         for (var i = 0; i < messages.length; i++) {
@@ -143,15 +143,15 @@ function process(fn, markers) {
             }
 
             // output message string
-            if (!~uniq.indexOf(msg)) {
-                uniq.push(msg);
+            _key = toString$.call(msg).slice(8,-1)==="Array"?msg.join("|"):msg
+            if (!~uniq.indexOf(_key)) {
+                uniq.push(_key);
                 console.log(comment);
                 console.log(format_msgid(msg));
             }
         }
     });
 }
-
 
 function run() {
     var getopt = new Getopt([
