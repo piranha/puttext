@@ -143,7 +143,7 @@ function process(fn, markers) {
             }
 
             // output message string
-            _key = toString$.call(msg).slice(8,-1)==="Array"?msg.join("|"):msg
+            _key = toString$.call(msg).slice(8,-1) === "Array" ? msg.join("|") : msg;
             if (!~uniq.indexOf(_key)) {
                 uniq.push(_key);
                 console.log(comment);
