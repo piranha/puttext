@@ -63,7 +63,7 @@
                              {num: num, msg1: msg1, trans: trans});
             }
 
-            return trans[isPlural(num)];
+            return trans[+isPlural(num)];
         }
 
         return function(messages) {
