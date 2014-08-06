@@ -34,6 +34,12 @@
             }
 
             rv.pluralNum = parseInt(match[1], 10);
+            
+            if (rv.pluralNum == 1) {
+                rv.isPlural = function () {return 0;};
+                return rv;
+            }
+
             var expr = match[2];
             var varName = match[3];
 
