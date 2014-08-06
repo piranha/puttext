@@ -5,7 +5,7 @@
 
 (function(define) {
     return define(function() {
-        var pluralRe = /^Plural-Forms:\s*nplurals\s*=\s*(\d+);\s*plural\s*=\s*([^a-zA-Z0-9\$]*([a-zA-Z0-9\$]+).+)$/m;
+        var pluralRe = /^Plural-Forms:\s*nplurals\s*=\s*(\d+);\s*plural\s*=\s*([^a-zA-Z0-9\$]*([a-zA-Z0-9\$]+).+)$/im;
 
         function format(s, ctx) {
             return s.replace(/(^|.)\{([^\}]+)\}/g, function(match, prev, k) {
@@ -34,6 +34,12 @@
             }
 
             rv.pluralNum = parseInt(match[1], 10);
+            
+            if (rv.pluralNum == 1) {
+                rv.isPlural = function () {return 0;};
+                return rv;
+            }
+
             var expr = match[2];
             var varName = match[3];
 
