@@ -132,6 +132,12 @@ function process(fn, markers) {
         'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n');
 
     return walk(fn, function(err, fn) {
+
+        if(err){
+            console.log(err);
+            return;
+        }
+
         var messages = extract(fn, markers), msg, comment, _key;
         
 
