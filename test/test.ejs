@@ -1,0 +1,15 @@
+<span><%= __("EJS simple test") %></span>
+<ul>
+    <%
+    var items = 0, max = 10;
+
+    for(;items < max;items++){ %>
+        <li><%= __("left one item from {max}", "left {x} items from {max}", items, {x: items, max: max} )  %></li>
+    <%
+    }
+    %>
+</ul>
+
+<script>
+    console.log(__("I don't know will it work or not"));
+</script>

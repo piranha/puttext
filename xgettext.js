@@ -2,6 +2,7 @@
 
 var path = require('path'),
     fs = require('fs'),
+    parsers = require('./parsers'),
     Getopt = require('node-getopt'),
     U = require('uglify-js');
 
@@ -23,7 +24,7 @@ function check(node, markers) {
 
 
 function extract(fn, markers) {
-    var ast, code, results, visitor, walker;
+    var ast, code, results, visitor, walker, parser;
     results = [];
 
     visitor = function(node, descend) {
@@ -43,7 +44,9 @@ function extract(fn, markers) {
         results.push(entry);
     };
 
-    code = fs.readFileSync(fn).toString();
+    parser = path.extname(fn).substr(1).toUpperCase();
+    code = parsers[parser](fs.readFileSync(fn).toString());
+
     try {
         ast = U.parse(code);
     } catch (e) {
@@ -69,7 +72,7 @@ function walk(filepath, callback) {
                     return walk(path.join(filepath, fn), callback);
                 });
             });
-        } else if (path.extname(filepath) === '.js') {
+        } else if (path.extname(filepath).substr(1).toUpperCase() in parsers) {
             return callback(null, filepath);
         }
     });
