@@ -11,7 +11,7 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: uk_UA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,15 +20,15 @@ msgstr ""
 
 #: test\test.ejs:1
 msgid "EJS simple test"
-msgstr ""
+msgstr "простий тест EJS"
 
 #: test\test.ejs:24
 msgid "another EJS code"
-msgstr ""
+msgstr "інший код на EJS"
 
 #: test\test.ejs:19
 msgid "inline EJS script code"
-msgstr ""
+msgstr "код в середині тегу script в EJS"
 
 #: test\test.js:3
 msgid "just a test"
@@ -37,9 +37,9 @@ msgstr "просто тест"
 #: test\test.ejs:10
 msgid "one item left from {max}"
 msgid_plural "items {x} left from {max}"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "залишилась {x} штучка із {max}"
+msgstr[1] "залишилось {x} штучок із {max}"
+msgstr[2] "залишилось {x} штучок із {max}"
 
 #. n - 10 billion
 #: test\test.js:6
