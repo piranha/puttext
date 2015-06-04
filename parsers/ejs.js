@@ -7,7 +7,10 @@
 function parseEJS(str, options) {
     options = options || {};
     var open = options.open || '<%',
-        close = options.close || '%>';
+        close = options.close || '%>',
+        scriptOpen = '<script',
+        scriptClose = '</script>'
+        ;
 
     var buf = [],
         comment,
@@ -55,7 +58,18 @@ function parseEJS(str, options) {
             buf.push(js, ';');
             i += end - start + close.length - 1;
 
-        } else if (str.substr(i, 1) === "\n") {
+        }
+        //detect script-tag
+        else if(str.slice(i, i + scriptOpen.length) === scriptOpen){
+            i = str.indexOf('>', i) + 1;
+
+            var scriptEnd = str.indexOf(scriptClose, i),
+                inlineJS = str.substring(i, scriptEnd)
+            ;
+            buf.push(inlineJS);
+            i = scriptEnd + 1;
+        }
+        else if (str.substr(i, 1) === "\n") {
             buf.push("\n");
         }
     }
