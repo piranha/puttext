@@ -47,10 +47,11 @@ function parseEJS(str, options) {
                 js = js.split('|', 1)[0];
             }
 
-            while ((n = js.indexOf("\n", n)) > -1) {
-                n += 1;
-                buf.push("\n");
-            }
+            //follow code makes wrong assignment for line of source code. Let's skip it
+            //while ((n = js.indexOf("\n", n)) > -1) {
+            //    n += 1;
+            //    buf.push("\n");
+            //}
 
             // skip EJS comments and EJS include statements which are not valid javascript
             if (comment || /^\s*include\s*[^\s]+\s*$/.test(js)) js = "";
