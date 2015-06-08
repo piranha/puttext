@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var path = require('path'),
+var GetOpt = require('node-getopt'),
     p2j = require('po2json');
 
 
@@ -13,13 +13,28 @@ function unparseHeader(header) {
 }
 
 function run() {
-    if (process.argv.length < 3) {
-        console.log("Usage: po2json.js <INPUT>");
-        process.exit();
+
+    var getOpt = new GetOpt([
+        ['', 'space=[NUMBER]', 'print formatted JSON with spaces (default 0, non-formatted JSON)'],
+        ['f', 'formatted', 'Same as --space=2'],
+        ['h', 'help', 'display this help']
+    ]).bindHelp();
+
+    var opt = getOpt.parseSystem();
+
+    if (!opt.argv.length) {
+        return getOpt.showHelp();
     }
 
-    var name = path.basename(process.argv[2], '.po');
-    var parsed = p2j.parseSync(process.argv[2])[name];
+    var space = opt.options.formatted === true? 2 : parseInt(opt.options.space) || false;
+
+    try {
+        var parsed = p2j.parseFileSync(opt.argv[0]);
+    } catch (e) {
+        console.error(["Can't parse PO file: ", opt.argv[0]].join());
+        console.log(e);
+        return;
+    }
 
     var data = {}, item;
     for (var key in parsed) {
@@ -33,7 +48,7 @@ function run() {
         }
     }
 
-    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data, null, space));
 }
 
 run();
