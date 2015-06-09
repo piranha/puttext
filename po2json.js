@@ -20,18 +20,18 @@ function run() {
         ['h', 'help', 'display this help']
     ]).bindHelp();
 
-    var opt = getOpt.parseSystem();
+    var opts = getOpt.parseSystem();
 
-    if (!opt.argv.length) {
+    if (!opts.argv.length) {
         return getOpt.showHelp();
     }
 
-    var space = opt.options.formatted === true? 2 : parseInt(opt.options.space) || false;
+    var space = opts.options.formatted === true? 2 : parseInt(opts.options.space) || false;
 
     try {
-        var parsed = p2j.parseFileSync(opt.argv[0]);
+        var parsed = p2j.parseFileSync(opts.argv[0]);
     } catch (e) {
-        console.error(["Can't parse PO file: ", opt.argv[0]].join());
+        console.error(["Can't parse PO file: ", opts.argv[0]].join());
         console.log(e);
         return;
     }
