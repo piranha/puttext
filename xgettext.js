@@ -122,7 +122,7 @@ function extract_comments(msg) {
 var uniq = [],
     toString$ = ({}).toString;
 
-function process(fn, markers) {
+function process_main(fn, markers) {
     if (!markers || !markers.length) {
         markers = ['__'];
     }
@@ -175,7 +175,7 @@ function run() {
         return getopt.showHelp();
     }
 
-    process(opt.argv[0], opt.options.marker);
+    process_main(opt.argv[0], opt.options.marker);
 }
 
 
