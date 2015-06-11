@@ -98,6 +98,12 @@ Translate a single string with formatting:
 console.log(__('this happened on {date}', {date: '2010-10-20'}));
 ```
 
+Translate a single string with comment (Note: currently supported comments only before phrase):
+
+```javascript
+console.log(__(/*some comment for phrase*/'this is a sample with comment'));
+```
+
 Translate a plural string:
 
 ```javascript

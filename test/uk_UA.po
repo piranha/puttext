@@ -41,8 +41,14 @@ msgstr[0] "залишилась {x} штучка із {max}"
 msgstr[1] "залишилось {x} штучок із {max}"
 msgstr[2] "залишилось {x} штучок із {max}"
 
+#. some notes
+#: test\test.js:4
+msgid "phrase with comment"
+msgstr "фраза з коментарем"
+
+#. coins amount
 #. n - 10 billion
-#: test\test.js:6
+#: test\test.js:7
 msgid "that's 1 coin"
 msgid_plural "that's {n} coins"
 msgstr[0] "це одна монета"
