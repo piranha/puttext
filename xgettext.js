@@ -14,7 +14,9 @@ function check(node, markers) {
     for (var i = 0; i < markers.length; i++) {
         var m = markers[i].split('.');
         if (node.start.value === m[0] &&
-            node.expression.end.value === m[m.length - 1]) {
+            node.expression.end.value === m[m.length - 1] &&
+            //skip call without any args, like __();
+            node.args.length) {
             return true;
         }
     }
@@ -33,13 +35,19 @@ function extract(fn, markers) {
         }
 
         var a = node.args;
-        var entry = ["#: " + fn + ":" + node.start.line];
+        var entry = [["#: " + fn + ":" + node.start.line]];
 
         if (a.length > 1 && typeof a[1].value === 'string') {
             entry.push([a[0].value, a[1].value]);
         } else {
             entry.push(a[0].value);
         }
+
+
+        a[0].start.comments_before.forEach(function (_node) {
+            entry[0].push('#. ' + _node.value);
+        });
+
 
         results.push(entry);
     };
@@ -142,6 +150,7 @@ function process_main(fn, markers) {
         
 
         for (var i = 0; i < messages.length; i++) {
+            //comment is an array
             comment = messages[i][0];
             msg = messages[i][1];
 
@@ -155,7 +164,7 @@ function process_main(fn, markers) {
             _key = toString$.call(msg).slice(8,-1) === "Array" ? msg.join("|") : msg;
             if (!~uniq.indexOf(_key)) {
                 uniq.push(_key);
-                console.log(comment);
+                console.log(comment.join("\n"));
                 console.log(format_msgid(msg));
             }
         }
