@@ -122,7 +122,7 @@ function extract_comments(msg) {
     })
 
     return {
-        c: comments.join(''), 
+        c: comments.join(''),
         m: msg[1] ? msg : msg[0]
     }
 }
@@ -147,7 +147,6 @@ function process_main(fn, markers) {
         }
 
         var messages = extract(fn, markers), msg, comment, _key;
-        
 
         for (var i = 0; i < messages.length; i++) {
             //comment is an array
@@ -186,6 +185,5 @@ function run() {
 
     process_main(opt.argv[0], opt.options.marker);
 }
-
 
 run();
