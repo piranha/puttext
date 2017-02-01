@@ -1,0 +1,19 @@
+<span><%= __("EJS simple test") %></span>
+<ul>
+    <%
+    var items = 0, max = 10;
+
+    for(;items < max;items++){ %>
+        <li><%= __("one item left from {max}", "items {x} left from {max}", items, {x: items, max: max} )  %></li>
+    <%
+    }
+    %>
+</ul>
+
+<script type="text/javascript">
+    console.log(__("inline EJS script code"));
+</script>
+
+<script>
+    //one more test
+    console.log(__("another EJS code"));</script>

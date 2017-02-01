@@ -19,6 +19,14 @@ There is a short rant about it, both
 [in Russian](http://solovyov.net/blog/2013/i18n/) and
 [in English](http://solovyov.net/en/2013/i18n/).
 
+## Index
+
+- [API](#api)
+  - [Additional properties](#additional-properties)
+  - [Examples](#examples)
+- [Plural forms](#plural-forms)
+- [Generating .po](#generating-.po)
+
 ## API
 
 If you use AMD modules, then puttext should behave as a good AMD module. If you
@@ -71,7 +79,7 @@ considered to be a commentary for someone who does translation, so only
 
 - `__.pluralNum` - total number of variants for plural forms.
 
-## Examples
+### Examples
 
 Initialization:
 
@@ -98,6 +106,14 @@ Translate a single string with formatting:
 console.log(__('this happened on {date}', {date: '2010-10-20'}));
 ```
 
+Translate a single string with comment, this is for the comment to appear in
+`.po` file after running `i18n-collect` on your files (note: supports comments
+only in this position, before actual phrase inside of the call):
+
+```javascript
+console.log(__(/*some comment for phrase*/'this is a sample with comment'));
+```
+
 Translate a plural string:
 
 ```javascript
@@ -115,17 +131,25 @@ function (bottles) {
 }
 ```
 
-### Plural forms
+## Plural forms
 
-Biggest complexity of translation comes from plural forms, and gettext (and
-puttext along with it) handles that with a special header named
-`Plural-Forms`. This header contains information about amount of plural forms
-and a formula to calculate which form should be used for given number. You can
-find examples of formulas in
+One of the complexities of translation comes from plural forms, and this is
+handled with a special header named `Plural-Forms`. This header contains
+information about amount of plural forms and a formula to calculate which form
+should be used for given number. You can find examples of formulas in
 [gettext documentation](http://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html).
 Just search there by your language name.
 
-Example of a translation for Ukrainian (3 plural forms):
+So for example Ukrainian would have this header (you'll have to put it in your
+`.po` file):
+
+```
+Plural-Forms: nplurals=3; \
+    plural=n%10==1 && n%100!=11 ? 0 : \
+           n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;
+```
+
+And then have a translation like that:
 
 ```
 msgid "1 bottle"
@@ -134,3 +158,15 @@ msgstr[0] "одна пляшка"
 msgstr[1] "{n} пляшки"
 msgstr[2] "{n} пляшок"
 ```
+
+## Generating .po
+
+There is a shell script called `i18n-collect` (or `i18n-collect.bat` for
+Windows), which calls out to provided `xgettext.js`, and to `msguniq` and
+`msgmerge` commands from actual `gettext` package (so make sure it's installed),
+which you give a path to a `.po` file (it may exist or may not yet), and a path
+to directory (run without arguments to see usage), and it'll collect your
+messages.
+
+Run `i18n-collect` without arguments to see usage. Sorry, but `i18n-collect.bat`
+can't handle custom markers, just write your own version if you need that.

@@ -1,16 +1,37 @@
 #!/bin/sh
 
-if [ -z $1 ]; then
-   echo "Usage: $0 <path-to.po> <dir-with-sources>"
-   exit
+OPTIONS=""
+while getopts ":m:" opt; do
+    case $opt in
+        m) OPTIONS="$OPTIONS -m $OPTARG";;
+        :) echo "Option -$OPTARG requires an argument" >&2; exit 1;;
+        \?) echo "Invalid option: -$OPTARG" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $0 [-m MARKER ...] <path-to.po> <dir-with-sources>"
+    echo
+    echo "Collect messages for translation"
+    echo
+    echo "options:"
+    echo " -m  set a marker to look for (default: '__', may be supplied multiple times)"
+    exit
 fi
 
-$(dirname $0)/xgettext.js $2 | msguniq > out.po
+msguniq -V >/dev/null 2>&1 || {
+    echo >&2 "gettext commands (msguniq, msgmerge) are required, but not installed. Aborting."
+    exit 1
+}
+
+$(dirname $0)/xgettext.js $OPTIONS $2 | msguniq > out.po
 
 if [ -f $1 ]; then
     VERSION_CONTROL=none msgmerge -U $1 out.po
+    rm -f out.po
 else
     mv out.po $1
 fi
 
-rm out.po

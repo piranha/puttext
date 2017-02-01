@@ -2,6 +2,7 @@
 
 var path = require('path'),
     fs = require('fs'),
+    parsers = require('./parsers'),
     Getopt = require('node-getopt'),
     U = require('uglify-js');
 
@@ -13,7 +14,9 @@ function check(node, markers) {
     for (var i = 0; i < markers.length; i++) {
         var m = markers[i].split('.');
         if (node.start.value === m[0] &&
-            node.expression.end.value === m[m.length - 1]) {
+            node.expression.end.value === m[m.length - 1] &&
+            //skip call without any args, like __();
+            node.args.length) {
             return true;
         }
     }
@@ -23,7 +26,7 @@ function check(node, markers) {
 
 
 function extract(fn, markers) {
-    var ast, code, results, visitor, walker;
+    var ast, code, results, visitor, walker, parser;
     results = [];
 
     visitor = function(node, descend) {
@@ -32,7 +35,7 @@ function extract(fn, markers) {
         }
 
         var a = node.args;
-        var entry = ["#: " + fn + ":" + node.start.line];
+        var entry = [["#: " + fn + ":" + node.start.line]];
 
         if (a.length > 1 && typeof a[1].value === 'string') {
             entry.push([a[0].value, a[1].value]);
@@ -40,10 +43,18 @@ function extract(fn, markers) {
             entry.push(a[0].value);
         }
 
+
+        a[0].start.comments_before.forEach(function (_node) {
+            entry[0].push('#. ' + _node.value);
+        });
+
+
         results.push(entry);
     };
 
-    code = fs.readFileSync(fn).toString();
+    parser = path.extname(fn).substr(1).toUpperCase();
+    code = parsers[parser](fs.readFileSync(fn).toString());
+
     try {
         ast = U.parse(code);
     } catch (e) {
@@ -69,7 +80,7 @@ function walk(filepath, callback) {
                     return walk(path.join(filepath, fn), callback);
                 });
             });
-        } else if (path.extname(filepath) === '.js') {
+        } else if (path.extname(filepath).substr(1).toUpperCase() in parsers) {
             return callback(null, filepath);
         }
     });
@@ -111,7 +122,7 @@ function extract_comments(msg) {
     })
 
     return {
-        c: comments.join(''), 
+        c: comments.join(''),
         m: msg[1] ? msg : msg[0]
     }
 }
@@ -119,7 +130,7 @@ function extract_comments(msg) {
 var uniq = [],
     toString$ = ({}).toString;
 
-function process(fn, markers) {
+function process_main(fn, markers) {
     if (!markers || !markers.length) {
         markers = ['__'];
     }
@@ -129,10 +140,16 @@ function process(fn, markers) {
         'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n');
 
     return walk(fn, function(err, fn) {
+
+        if(err){
+            console.log(err);
+            return;
+        }
+
         var messages = extract(fn, markers), msg, comment, _key;
-        
 
         for (var i = 0; i < messages.length; i++) {
+            //comment is an array
             comment = messages[i][0];
             msg = messages[i][1];
 
@@ -146,7 +163,7 @@ function process(fn, markers) {
             _key = toString$.call(msg).slice(8,-1) === "Array" ? msg.join("|") : msg;
             if (!~uniq.indexOf(_key)) {
                 uniq.push(_key);
-                console.log(comment);
+                console.log(comment.join("\n"));
                 console.log(format_msgid(msg));
             }
         }
@@ -166,8 +183,7 @@ function run() {
         return getopt.showHelp();
     }
 
-    process(opt.argv[0], opt.options.marker);
+    process_main(opt.argv[0], opt.options.marker);
 }
-
 
 run();
