@@ -8,10 +8,11 @@
         var pluralRe = /^Plural-Forms:\s*nplurals\s*=\s*(\d+);\s*plural\s*=\s*([^a-zA-Z0-9\$]*([a-zA-Z0-9\$]+).+)$/im;
 
         function format(s, ctx) {
-            return s.replace(/(^|.)\{([^\}]+)\}/g, function(match, prev, k) {
+            return s.replace(/(^|.)?\{([^\}]+)\}/g, function(match, prev, k) {
                 if (prev === '\\') {
                     return '{' + k + '}';
                 }
+                prev = prev || ""; // should be empty string if something like `undefined`
                 return prev + ctx[k.split('#')[0].trim()];
             });
         }
@@ -34,7 +35,7 @@
             }
 
             rv.pluralNum = parseInt(match[1], 10);
-            
+
             if (rv.pluralNum == 1) {
                 rv.isPlural = function () {return 0;};
                 return rv;
