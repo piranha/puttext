@@ -10,8 +10,8 @@
         "url": "http://github.com/piranha/puttext/raw/master/LICENSE"
     },
     "dependencies": {
-        "uglify-js": "2.4.x",
-        "node-getopt": "0.2.x",
+        "uglify-js": "2.8.x",
+        "node-getopt": "0.3.x",
         "po2json": "0.4.x"
     },
     "main": "puttext.js",
