@@ -25,7 +25,7 @@ There is a short rant about it, both
   - [Additional properties](#additional-properties)
   - [Examples](#examples)
 - [Plural forms](#plural-forms)
-- [Generating .po](#generating-.po)
+- [Generating .po](#generating.po)
 
 ## API
 
